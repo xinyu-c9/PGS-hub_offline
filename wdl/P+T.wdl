@@ -16,7 +16,10 @@ workflow PandT{
 
 task adjustformat{
 	File in
-	command { Rscript $PRSHUB_PATH/utils/P_T/P_T_adjustformat.R -i ${in} -o output_adjustformat.ext}
+	command { 
+		source ~/.bashrc
+		Rscript $PRSHUB_PATH/utils/P_T/P_T_adjustformat.R -i ${in} -o output_adjustformat.ext
+	}
 	output { File out = "output_adjustformat.ext"}
 }
 
@@ -25,6 +28,7 @@ task clumping{
 	String in2_bfile
 	Array[Float] r2_value
 	command {
+		source ~/.bashrc
 		for i in ${sep=" " r2_value}
 		do
 		$PRSHUB_PATH/utils/P_T/plink \
@@ -45,6 +49,7 @@ task split{
 	Array[Float] in_rangelist
 	Array[File] in_clumping_summary
 	command { 
+		source ~/.bashrc
 		for i in ${sep=" " in_clumping_summary}
 		do
 		Rscript $PRSHUB_PATH/utils/P_T/P+T_split.R -i $i -o $(basename $i) --rangelist ${sep=" " in_rangelist}

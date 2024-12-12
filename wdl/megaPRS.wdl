@@ -1,3 +1,4 @@
+version 1.0
 # Author: Xingyu Chen
 # File: megaPRS.wdl
 # Version: 1.0
@@ -25,16 +26,24 @@ workflow megaPRS{
 }
 
 task adjustformat{
-	File in
-	command { Rscript $PRSHUB_PATH/utils/megaPRS/megaPRS_adjustformat.R -i ${in} -o output_adjustformat.ext }
+	input {
+		File in
+	}
+	command { 
+		source ~/.bashrc
+		Rscript $PRSHUB_PATH/utils/megaPRS/megaPRS_adjustformat.R -i ${in} -o output_adjustformat.ext 
+	}
 	output { File out = "output_adjustformat.ext" }
 }
 
 task cal_tagging{
-	String ldref_0
-	File sst_file
-	String h2_filename
+	input {
+		String ldref_0
+		File sst_file
+		String h2_filename
+	}
 	command {
+		source ~/.bashrc
 		less ${sst_file} | cut -f 1 | grep -wFf - ${ldref_0}/megaPRS/plink.bim | cut -f 2 > snplist
 		$PRSHUB_PATH/utils/megaPRS/ldak5.2.linux \
 			--sum-hers ./${h2_filename} \
@@ -50,13 +59,16 @@ task cal_tagging{
 }
 
 task cal_eff{
-	String ldref_0
-	File sst_file
-	File ind_her
-	File snplist
-	String model 
-	String window_kb 
+	input {
+		String ldref_0
+		File sst_file
+		File ind_her
+		File snplist
+		String model 
+		String window_kb 
+	}
 	command {
+		source ~/.bashrc
 		$PRSHUB_PATH/utils/megaPRS/ldak5.2.linux \
 			--mega-prs ./result \
 			--model ${model} \
@@ -72,13 +84,16 @@ task cal_eff{
 }
 
 task cal_eff_allmodel{
-	String ldref_0
-	File sst_file
-	File ind_her
-	File snplist
-	String model 
-	String window_kb 
+	input {
+		String ldref_0
+		File sst_file
+		File ind_her
+		File snplist
+		String model 
+		String window_kb 
+	}
 	command {
+		source ~/.bashrc
 		$PRSHUB_PATH/utils/megaPRS/ldak5.2.linux \
 			--mega-prs ./result \
 			--model ${model} \
@@ -93,7 +108,9 @@ task cal_eff_allmodel{
 }
 
 task zip{
-	Array[File] in_PRS_result
+	input {
+		Array[File] in_PRS_result
+	}
 	command { 
 		IN_DIR=$(dirname ${in_PRS_result[1]})
 		for i in ${sep=" " in_PRS_result}

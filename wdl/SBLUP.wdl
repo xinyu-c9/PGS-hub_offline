@@ -16,7 +16,10 @@ workflow SBLUP{
 
 task adjustformat{
 	File gwas
-	command { Rscript $PRSHUB_PATH/utils/SBLUP/SBLUP_adjustformat.R -i ${gwas} -o output_adjustformat.ext }
+	command { 
+		source ~/.bashrc
+		Rscript $PRSHUB_PATH/utils/SBLUP/SBLUP_adjustformat.R -i ${gwas} -o output_adjustformat.ext 
+	}
 	output { File out = "output_adjustformat.ext" }
 }
 
@@ -27,6 +30,7 @@ task SBLUP_cal{
 	Array[String] cojo_wind
 	String resultname 
 	command {
+		source ~/.bashrc
 		$PRSHUB_PATH/utils/SBLUP/gcta-1.94.1 \
 			--bfile ${ldref}/SBLUP/plink \
 			--cojo-file ${gwas} \

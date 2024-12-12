@@ -15,7 +15,10 @@ workflow SDPR{
 
 task adjustformat{
 	File gwas
-	command { Rscript $PRSHUB_PATH/utils/SDPR/SDPR_adjustformat.R -i ${gwas} -o output_adjustformat.ext }
+	command { 
+		source ~/.bashrc
+		Rscript $PRSHUB_PATH/utils/SDPR/SDPR_adjustformat.R -i ${gwas} -o output_adjustformat.ext 
+	}
 	output { File out = "output_adjustformat.ext" }
 }
 
@@ -25,7 +28,8 @@ task SDPR_cal{
 	Array[Int] n_gwas
 	String resultname 
 	command {
-		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PRSHUB_PATH/utils/SDPR/gsl/lib/:$PRSHUB_PATH/utils/SDPR/MKL/lib/
+		source ~/.bashrc
+		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PRSHUB_PATH/utils/SDPR/SDPR-0.9.1/gsl/lib/:$PRSHUB_PATH/utils/SDPR/SDPR-0.9.1/MKL/lib/
 		for i in `seq 22`
 		do
 			$PRSHUB_PATH/utils/SDPR/SDPR-0.9.1/SDPR -mcmc \

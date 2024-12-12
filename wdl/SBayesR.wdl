@@ -9,8 +9,8 @@ workflow SBayesR{
 		String ldref_0 
 		Array[Float] pi_1_value
 		Array[Float] gamma_1_value
-		String ambiguous_snp_1_value
-		String impute_n_1_value
+		String? ambiguous_snp_1_value = ""
+		String? impute_n_1_value = ""
 		Array[Int] chain_length_1_value																							
 		Array[Int] burn_in_1_value
 		Array[Int] out_freq_1_value
@@ -29,12 +29,14 @@ task adjustformat{
 		File gwas
 	}
 	command <<< 
+		source ~/.bashrc
+		header=$(head -n 1 ~{gwas})
 		less ~{gwas} | sed 1d | awk '{print > "chr" $1}'
 		for i in {1..22}
 		do
-		head -n 1 ~{gwas} | sed -e '1r /dev/stdin' -e '1!b' chr$i > header_chr$i
-		mv header_chr$i chr$i
-		Rscript $PRSHUB_PATH/utils/SBayesR/SBayesR_adjustformat.R -i chr$i -o output_adjustformat_chr$i
+			echo "$header" | cat - chr$i > tmp_chr$i
+			mv tmp_chr$i chr$i
+			Rscript $PRSHUB_PATH/utils/SBayesR/SBayesR_adjustformat.R -i chr$i -o output_adjustformat_chr$i
 		done
 	>>>
 	output { Array[File] out = glob("output_adjustformat_chr*") }
@@ -54,6 +56,7 @@ task SBayesR_cal{
 		String resultname 
 	}
 	command <<< 
+		source ~/.bashrc
 		for i in ~{sep=" " gwas}
 		do
 			for c in ~{sep=" " chain_length}

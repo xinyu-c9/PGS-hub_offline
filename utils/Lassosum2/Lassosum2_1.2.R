@@ -8,7 +8,7 @@ Notes:
   * The LD reference panel were stored in separated chr, plink 1.0 bed/bim/fam format.
 
 Usage:
-  LDpred2.R -o prefix -g gwas -p bfile -d delta -l nlambda
+  LDpred2.R -o prefix -g gwas -p bfile -d delta -l nlambda -a dir
 
 Options:
   -o prefix     Output file name prefix.
@@ -18,7 +18,7 @@ Options:
                         eur.ref.chr1.ref, eur.ref.chr2.ref ... eur.ref.chr22.ref
   -d delta      Delta of lassosum2
   -l nlambda    numbers of lambda in lassosum2
-  -d dir        Directory containing genetic map for snp_asGeneticPos().
+  -a dir        Directory containing genetic map for snp_asGeneticPos().
 ' -> doc
 
 # Pipeline for running LDpred2. bigsnpr version >= 1.7.1, tested in 1.7.1
@@ -60,7 +60,7 @@ deltavalue = opts$d
 deltavalue = as.numeric(unlist(strsplit(deltavalue,split = ",")))
 numlambda = opts$l
 numlambda = as.numeric(numlambda)
-genetic_map_dir = opts$d
+genetic_map_dir = opts$a
 MSGE <- function(...) cat(sprintf(...), sep='', file=stderr())
 myformat <- function(x) formatC(x, digits = 6, format = "g")
 # END parse parameter

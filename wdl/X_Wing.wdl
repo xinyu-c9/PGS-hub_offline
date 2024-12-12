@@ -1,3 +1,4 @@
+version 1.0
 # Author: Xingyu Chen
 # File: X_Wing.wdl
 # Version: 1.0
@@ -28,6 +29,7 @@ task X_Wing_adjustformat {
 		Array[File] in
 	}
 	command <<< 
+		source ~/.bashrc
 		j=0
 		for i in ~{sep=" " in}
 		do
@@ -52,6 +54,7 @@ task LOGODetect{
 		Int n_topregion
 	}
 	command <<< 
+		source ~/.bashrc
 		Rscript $PRSHUB_PATH/utils/X_Wing/LOGODetect.R \
 		--sumstats ~{in1},~{in2} \
 		--n_gwas ~{sep="," n_gwas} \
@@ -87,6 +90,7 @@ task run_PANTHER{
 		File anno1
 	}
 	command <<< 
+		source ~/.bashrc
 		export N_THREADS=8
 		export MKL_NUM_THREADS=$N_THREADS
 		export NUMEXPR_NUM_THREADS=$N_THREADS

@@ -10,7 +10,7 @@ Notes:
   *     but use existed one. The cache can be created by `Ldpred2LDRefCache.R`
 
 Usage:
-  LDpred2.R -o prefix -g gwas -p bfile -a pvalue -b heritability
+  LDpred2.R -o prefix -g gwas -p bfile -a pvalue -b heritability -d dir
 
 Options:
   -o prefix     Output file name prefix.
@@ -23,6 +23,7 @@ Options:
                         eur.ref.chr1.ref.LDrefCaches.rds ... eur.ref.chr22.ref.LDrefCaches.rds
   -a pvalue	pvalue of ldpred2, `,` delimited
   -b heritability	heritability, `,` delimited
+  -d dir        Directory containing genetic map for snp_asGeneticPos().
 ' -> doc
 
 # Pipeline for running LDpred2. bigsnpr version >= 1.7.1, tested in 1.7.1
@@ -64,6 +65,7 @@ p_seq  = opts$a
 p_seq = as.numeric(unlist(strsplit(p_seq,split = ",")))
 h2_num = opts$b
 h2_num = as.numeric(unlist(strsplit(h2_num,split = ",")))
+genetic_map_dir = opts$d
 # send message to std error.
 MSGE <- function(...) cat(sprintf(...), sep='', file=stderr())
 myformat <- function(x) formatC(x, digits = 6, format = "g")

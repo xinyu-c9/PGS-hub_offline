@@ -23,7 +23,10 @@ workflow Lassosum2{
 
 task adjustformat{
 	File gwas
-	command { Rscript $PRSHUB_PATH/utils/Lassosum2/Lassosum2_adjustformat.R -i ${gwas} -o output_adjustformat.ext }
+	command { 
+		source ~/.bashrc
+		Rscript $PRSHUB_PATH/utils/Lassosum2/Lassosum2_adjustformat.R -i ${gwas} -o output_adjustformat.ext 
+	}
 	output { File out = "output_adjustformat.ext" }
 }
 
@@ -34,13 +37,14 @@ task lassosum_cal{
 	Array[String] delta
 	Array[String] nlambda 
 	command {
+		source ~/.bashrc
 		Rscript $PRSHUB_PATH/utils/Lassosum2/Lassosum2_1.2.R \
 		-o ${sep="" resultname}_result \
 		-g ${gwas} \
 		-p ${ld_ref}/Lassosum2/chr#. \
 		-d ${sep="," delta} \
 		-l ${sep="" nlambda} \
-		-d $PRSHUB_PATH/utils/LDpred2/geneticmap
+		-a $PRSHUB_PATH/utils/LDpred2/geneticmap
 	}
 	output { Array[File] out = glob("*result*") }
 }
@@ -52,13 +56,14 @@ task lassosum_cache_cal{
 	Array[String] delta
 	Array[String] nlambda
 	command {
+		source ~/.bashrc
 		Rscript $PRSHUB_PATH/utils/Lassosum2/Lassosum2LDCaches_1.2.R \
 		-o ${sep="" resultname}_result \
 		-g ${gwas} \
 		-p ${ld_ref}/Lassosum2/chr#. \
 		-d ${sep="," delta} \
 		-l ${sep="" nlambda} \
-		-d $PRSHUB_PATH/utils/LDpred2/geneticmap
+		-a $PRSHUB_PATH/utils/LDpred2/geneticmap
 	}
 	output { Array[File] out = glob("*result*") }
 }

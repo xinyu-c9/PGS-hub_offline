@@ -31,6 +31,7 @@ task adjustformatandPRS{
 		String resultname
 	}
 	command <<< 
+		source ~/.bashrc
 		export HDF5_USE_FILE_LOCKING='FALSE'
 		PYTHONPATH=$PRSHUB_PATH/utils/PRScsx/
 		j=0

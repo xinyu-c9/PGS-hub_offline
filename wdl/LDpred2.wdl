@@ -23,7 +23,10 @@ workflow LDpred2{
 
 task adjustformat{
 	File gwas
-	command { Rscript $PRSHUB_PATH/utils/LDpred2/LDpred2_adjustformat.R -i ${gwas} -o output_adjustformat.ext }
+	command { 
+		source ~/.bashrc
+		Rscript $PRSHUB_PATH/utils/LDpred2/LDpred2_adjustformat.R -i ${gwas} -o output_adjustformat.ext 
+	}
 	output { File out = "output_adjustformat.ext" }
 }
 
@@ -34,6 +37,7 @@ task LDpred2_cal{
 	Array[String] pvalue
 	Array[String] h2
 	command {
+		source ~/.bashrc
 		Rscript $PRSHUB_PATH/utils/LDpred2/LDpred2_1.2.R \
 		-o ${sep="" resultname}_result \
 		-g ${gwas} \
@@ -52,6 +56,7 @@ task LDpred2_cache_cal{
 	Array[String] pvalue
 	Array[String] h2
 	command {
+		source ~/.bashrc
 		Rscript $PRSHUB_PATH/utils/LDpred2/LDpred2LDCaches_1.2.R \
 		-o ${sep="" resultname}_result \
 		-g ${gwas} \

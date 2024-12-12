@@ -6,7 +6,7 @@ workflow PRScs{
 	File summary_statistic_2 
 	String ldref_0
 	Array[Int] n_gwas_1_value
-	Array[String] phi_1_value = ["1e-2"]
+	String? phi_1_value
 	Array[Float] param_A_1_value = [1]
 	Array[Float] param_B_1_value = [0.5]
 
@@ -17,7 +17,10 @@ workflow PRScs{
 
 task adjustformat{
 	File in
-	command { Rscript $PRSHUB_PATH/utils/PRScs/PRScs_adjustformat.R -i ${in} -o output_adjustformat.ext }
+	command { 
+		source ~/.bashrc
+		Rscript $PRSHUB_PATH/utils/PRScs/PRScs_adjustformat.R -i ${in} -o output_adjustformat.ext 
+	}
 	output { File out = "output_adjustformat.ext" }
 }
 
@@ -25,26 +28,37 @@ task PRS{
 	String cohort_0
 	File sst_file
 	Array[Int] n_gwas
-	Array[String] phi
+	String? phi
 	Array[Float] param_A
 	Array[Float] param_B
 	command {
+		source ~/.bashrc
 		bash $PRSHUB_PATH/utils/PRScs/delete_multiple_A1A2_line.sh -i ${sst_file} -a 2 -b 3 -o gwasfile
 		sed -i '1i\SNP\tA1\tA2\tBETA\tP\t' gwasfile
 		export HDF5_USE_FILE_LOCKING=FALSE
 		PYTHONPATH=$PRSHUB_PATH/utils/PRScs
-		for i in ${sep=" " phi}
-		do
-		echo `pwd`"/result" | xargs -I '%' python $PRSHUB_PATH/utils/PRScs/PRScs.py \
-		--ref_dir=${cohort_0}/PRSCS \
-		--bim_prefix=${cohort_0}/plink_temp/plink \
-		--sst_file=gwasfile \
-		--n_gwas=${sep="" n_gwas} \
-		--phi=$i \
-		--a=${sep="" param_A} \
-		--b=${sep="" param_B} \
-		--out_dir=%
-		done
+        if [ -z "${phi}" ]; then
+            echo `pwd`"/result" | xargs -I '%' python $PRSHUB_PATH/utils/PRScs/PRScs.py \
+            --ref_dir=${cohort_0}/PRSCS \
+            --bim_prefix=${cohort_0}/plink_temp/plink \
+            --sst_file=gwasfile \
+            --n_gwas=${sep="" n_gwas} \
+            --a=${sep="" param_A} \
+            --b=${sep="" param_B} \
+            --out_dir=%
+        else
+            for i in ${sep=" " phi}; do
+                echo `pwd`"/result_$i" | xargs -I '%' python $PRSHUB_PATH/utils/PRScs/PRScs.py \
+                --ref_dir=${cohort_0}/PRSCS \
+                --bim_prefix=${cohort_0}/plink_temp/plink \
+                --sst_file=gwasfile \
+                --n_gwas=${sep="" n_gwas} \
+                --phi=$i \
+                --a=${sep="" param_A} \
+                --b=${sep="" param_B} \
+                --out_dir=%
+            done
+        fi
 	}
 	output { Array[File] out = glob("*.txt") }
 }

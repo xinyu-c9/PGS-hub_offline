@@ -8,7 +8,7 @@ Notes:
   * The LD reference panel were stored in separated chr, plink 1.0 bed/bim/fam format.
 
 Usage:
-  LDpred2.R -o prefix -g gwas -p bfile -a pvalue -b heritability
+  LDpred2.R -o prefix -g gwas -p bfile -a pvalue -b heritability -d dir
 
 Options:
   -o prefix     Output file name prefix.
