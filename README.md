@@ -13,7 +13,7 @@ PRS-hub is a platform for batch offline calculation of various Polygenic Risk Sc
 2. Set the `PRSHUB_PATH` environment variable in your `.bashrc` file to quickly call scripts from the installation path:
 
     ```bash
-    export PRSHUB_PATH=/path/to/PRS-hub
+    export PRSHUB_PATH=`pwd`/PRS-hub_offline
     ```
 
 3. Save and source the `.bashrc` file to apply changes:
