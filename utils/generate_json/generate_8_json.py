@@ -20,7 +20,7 @@ def generate_json_configs(input_file, output_dir, cojo_sblup_value, sdpr_n_value
         },
         "LDpred2": {
             'LDpred2.resultname_1_value': ["result"],
-            'LDpred2.pvalue_1_value': ["0.0001", "0.00018", "0.00032", "0.00056", "0.001"],
+            'LDpred2.pvalue_1_value': ["0.0001","0.00018","0.00032","0.00056","0.001","0.0018","0.0032","0.0056","0.01","0.018","0.032","0.056","0.1","0.18","0.32","0.56"],
             'LDpred2.h2_1_value': ["0.7", "1", "1.4"],
             'LDpred2.use_ref_ld_1_value': "1",
         },
