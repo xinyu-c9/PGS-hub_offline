@@ -1,13 +1,13 @@
-# PRS-hub_offline
+# PGS-hub_offline
 
-PRS-hub is a platform for batch offline calculation of various Polygenic Risk Score (PRS) methods, built on WDL, allowing for local or server-based execution. Below are detailed instructions for installation, dependencies, and usage.
+PGS-hub is a platform for batch offline calculation of various Polygenic Score (PGS) methods, built on WDL, allowing for local or server-based execution. Below are detailed instructions for installation, dependencies, and usage.
 
 ## Installation
 
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/yourusername/PRS-hub.git
+    git clone https://github.com/yourusername/PGS-hub.git
     ```
 
 2. Set the `PRSHUB_PATH` environment variable in your `.bashrc` file to quickly call scripts from the installation path:
